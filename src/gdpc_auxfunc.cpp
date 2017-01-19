@@ -27,9 +27,9 @@ void getMatrixBeta(const arma::mat & Z,
   // critOut: criterion used to evaluate the fit
   int m = Z.n_rows;
   int N = Z.n_cols;
-  arma::mat Fmat = mat(k + 1, N);
-  arma::mat FF = mat(k + 2, k + 2);
-  arma::mat invFF = mat(k + 2, k + 2);
+  arma::mat Fmat = zeros(k + 1, N);
+  arma::mat FF = zeros(k + 2, k + 2);
+  arma::mat invFF = zeros(k + 2, k + 2);
   for ( int i = 0; i < N; i++){
     Fmat.col(i) = f.subvec(i, i + k);
   }
@@ -51,9 +51,9 @@ void getMatrixBeta(const arma::mat & Z,
   } else if (sel == 2) {
     critOut = N * log(mseOut) + m * (k + 2) * 2;  
   } else if (sel == 3) {
-    critOut = N * log(mseOut) + m * (k + 2) * log(N);  
+    critOut = N * log(mseOut) + m * (k + 2) * log((double) N);  
   } else if (sel == 4) {
-    critOut = N * log(mseOut) + (k + 2) * log(m);  
+    critOut = N * log(mseOut) + (k + 2) * log((double) m);  
   }
   mseOut = mseOut / m;
 }
@@ -135,7 +135,7 @@ arma::mat getFitted(arma::vec & f_fin,
   if (k > 0){
     f_fin.insert_rows(0, f_ini);
   }
-  arma::mat Fmat = mat(k + 1, N);
+  arma::mat Fmat = zeros(k + 1, N);
   for ( int i = 0; i < N; i++){
     Fmat.col(i) = f_fin.subvec(i, i + k);
   }

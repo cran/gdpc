@@ -1,14 +1,15 @@
-24fcbaed2a018313a370c145bfd523f1 *DESCRIPTION
+ace030fbc8e26f743cce269e250ed724 *DESCRIPTION
 60c4d6d082994136fb83065f6592444f *NAMESPACE
+1dedfdaa1173f85e5325b734874541f4 *NEWS
 e3a6d54dae50fe9041aa5c77f0495496 *R/RcppExports.R
 48009713845e2cf7ab6b1840e65dceaf *R/autoGDPC.R
-5b5642afb4b8c3c7de35fc4de39240d7 *R/classGDPC.R
+589c6adc23307f1bdf90fcc1b00cce3a *R/classGDPC.R
 a5c5df5e13369dcf2a3afac62434ba9f *data/ipi91.rda
 a2307cb682b865996eb66babcabff340 *data/pricesSP50.rda
-7a11f989d253df2466d54efc9efbd441 *man/auto.gdpc.Rd
+081a47b48433dd2620ab44f227d82a51 *man/auto.gdpc.Rd
 90f0535e4c8548128c7a9df00cafec02 *man/components.gdpcs.Rd
 72244c91a4f0d183b64b05071160ebea *man/fitted.gdpcs.Rd
-d21309e725dc805b59caa24b8611be88 *man/gdpc-package.Rd
+7438bfc21754c60cb5ec1ab5cd59c59c *man/gdpc-package.Rd
 9859a5b2a7372842cb8a2738e2330234 *man/gdpc.Rd
 4441c8689cdbf0263b02835d11751dea *man/ipi91.Rd
 d7a90bcd436fe181b5839979e4ebc8bd *man/plot.gdpc.Rd
@@ -16,4 +17,4 @@ d7a90bcd436fe181b5839979e4ebc8bd *man/plot.gdpc.Rd
 78f59037cf679af8435a7f2025144b60 *man/pricesSP50.Rd
 adbe6849be6f3d9410a656cd13091c6b *src/Makevars
 60370fd3a4ddfe134316a1c98bc46e07 *src/RcppExports.cpp
-6e6adf01a9d0d876056d11bf1f794b0e *src/gdpc_auxfunc.cpp
+ca486dd23e39341be470d74d7004fb52 *src/gdpc_auxfunc.cpp
