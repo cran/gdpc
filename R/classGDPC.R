@@ -13,9 +13,10 @@ is.gdpc <- function(object, ...) {
     return(FALSE)
   } else if (any(!inherits(object$mse, "numeric"), !inherits(object$crit, "numeric"), !inherits(object$alpha, "numeric"),
                  !inherits(object$beta, "matrix"), !inherits(object$call, "call"), !inherits(object$conv, "logical"), 
-                 all(!inherits(object$f,"numeric"), !inherits(object$f, "ts"), !inherits(object$f, "xts")),
+                 all(!inherits(object$f,"numeric"), !inherits(object$f, "ts"), !inherits(object$f, "xts"), !inherits(object$f, "zoo")),
                  all(!inherits(object$k, "numeric"), !inherits(object$k, "integer")), !inherits(object$expart, "numeric"),
-                 all(!inherits(object$initial_f,"numeric"), !inherits(object$initial_f,"ts"), !inherits(object$initial_f,"xts"))
+                 all(!inherits(object$initial_f,"numeric"), !inherits(object$initial_f,"ts"), !inherits(object$initial_f,"xts"),
+                     !inherits(object$initial_f, "zoo"))
   )) {
     return(FALSE)
   } else if (any(length(object$alpha) != dim(object$beta)[1], dim(object$beta)[2] != object$k + 1)) {
@@ -58,6 +59,8 @@ construct.gdpc <- function(out, data) {
   out$res <- NULL
   if (inherits(data, "xts")) {
     out$f <- reclass(out$f, match.to = data)
+  } else if (inherits(data, "zoo")) {
+    out$f <- zoo(out$f, order.by = index(data))
   } else if (inherits(data, "ts")) {
     out$f <- ts(out$f, start = start(data), end = end(data), frequency = frequency(data))
   }
@@ -114,6 +117,8 @@ construct.gdpc.norm <- function(out, data, comp_num) {
   out$f <- out$f[(k + 1):length(out$f)]
   if (inherits(data, "xts")) {
     out$f <- reclass(out$f, match.to = data)
+  } else if (inherits(data, "zoo")) {
+    out$f <- zoo(out$f, order.by = index(data))
   } else if (inherits(data, "ts")) {
     out$f <- ts(out$f, start = start(data), end = end(data), frequency = frequency(data))
   }
@@ -129,6 +134,8 @@ fitted.gdpc <- function(object, ...) {
   fitted <- getFitted(object$f, object$initial_f, object$beta, object$alpha, object$k)
   if (inherits(object$f, "xts")) {
     fitted <- reclass(fitted, match.to = object$f)
+  } else if (inherits(object$f, "zoo")) {
+    fitted <- zoo(fitted, order.by = index(object$f))
   } else if (inherits(object$f, "ts")) {
     fitted <- ts(fitted)
     attr(fitted, "tsp") <- attr(object$f, "tsp")
@@ -246,6 +253,8 @@ components.gdpcs <- function(object, which_comp = 1) {
   colnames(comps) <- paste("Component number", which_comp)
   if (inherits(object[[1]]$f, "xts")) {
     comps <- reclass(comps, match.to = object[[1]]$f)
+  } else if (inherits(object[[1]]$f, "zoo")) {
+    comps <- zoo(comps, order.by = index(object[[1]]$f))
   } else if (inherits(object[[1]]$f, "ts")) {
     comps <- ts(comps, start = start(object[[1]]$f), end = end(object[[1]]$f), frequency = frequency(object[[1]]$f))
   } 
@@ -265,6 +274,8 @@ fitted.gdpcs <- function(object, num_comp = 1, ...) {
   fitted <- Reduce('+', lapply(object[1:num_comp], fitted))
   if (inherits(object[[1]]$f, "xts")) {
     fitted <- reclass(fitted, match.to = object[[1]]$f)
+  } else if (inherits(object[[1]]$f, "zoo")) {
+    fitted <- zoo(fitted, order.by = index(object[[1]]$f))
   } else if (inherits(object[[1]]$f, "ts")) {
     fitted <- ts(fitted)
     attr(fitted, "tsp") <- attr(object[[1]]$f, "tsp")
@@ -273,11 +284,12 @@ fitted.gdpcs <- function(object, num_comp = 1, ...) {
 }
 
 
-plot.gdpcs <- function(x, which_comp = 1, ...) {
+plot.gdpcs <- function(x, which_comp = 1, plot.type = 'multiple',...) {
   #Plots a gdpcs object
   #INPUT
   # x: An object of class gdpcs, the result of auto.gdpc
   # which_comp: Integer vector. Indicates which components to plot
+  # plot_type: used only when x is of class zoo
   if (!is.gdpcs(x)) {
     stop("x should be of class gdpcs")
   }
@@ -288,12 +300,14 @@ plot.gdpcs <- function(x, which_comp = 1, ...) {
   }
   comps <- components(x, which_comp)
   if (inherits(comps, "xts") & length(which_comp)==1) {
-    plot(comps, main = "Principal Components",...)
+    plot.xts(comps, main = "Principal Components", ...)
+  } else if (inherits(comps, "zoo")) {
+    plot.zoo(comps, main = "Principal Components", plot.type = plot.type, ...)
   } else if (inherits(comps, "ts")) {
-    plot(comps, main = "Principal Components", plot.type = 'multiple', ...)
+    plot.ts(comps, main = "Principal Components", plot.type = 'multiple', ...)
   } else {
     comps <- ts(comps)
-    plot(comps, main = "Principal Components", plot.type = 'multiple', ...)
+    plot.ts(comps, main = "Principal Components", plot.type = 'multiple', ...)
   }
   
 }
