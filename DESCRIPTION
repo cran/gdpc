@@ -1,8 +1,8 @@
 Package: gdpc
 Type: Package
 Title: Generalized Dynamic Principal Components
-Version: 1.0.3
-Date: 2017-12-01
+Version: 1.1.0
+Date: 2018-05-08
 Author: Daniel Peña <daniel.pena@uc3m.es>,
     Ezequiel Smucler <ezequiels.90@gmail.com>,
     Victor Yohai <vyohai@dm.uba.ar>
@@ -13,9 +13,10 @@ License: GPL (>= 2)
 Imports: xts, zoo, methods, Rcpp (>= 0.12.7), parallel, doParallel,
         foreach
 LinkingTo: Rcpp, RcppArmadillo (>= 0.7.500.0.0)
-Depends: R (>= 3.3.1)
+Suggests: testthat
+Depends: R (>= 3.3.0)
 NeedsCompilation: yes
 Encoding: UTF-8
-Packaged: 2017-12-01 22:37:57 UTC; ezequiel
+Packaged: 2018-05-08 17:19:34 UTC; ezequiel
 Repository: CRAN
-Date/Publication: 2017-12-01 23:17:10 UTC
+Date/Publication: 2018-05-08 21:56:00 UTC

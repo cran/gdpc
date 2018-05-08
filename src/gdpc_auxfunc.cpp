@@ -53,7 +53,11 @@ void getMatrixBeta(const arma::mat & Z,
   } else if (sel == 3) {
     critOut = N * log(mseOut) + m * (k + 2) * log((double) N);  
   } else if (sel == 4) {
-    critOut = N * log(mseOut) + (k + 2) * log((double) m);  
+    arma::vec aux_min = zeros(2);
+    aux_min(0) = N;
+    aux_min(1) = m;
+    double min_Nm = aux_min.min();
+    critOut = min_Nm * log(mseOut) + (k + 1) * log(min_Nm);  
   }
   mseOut = mseOut / m;
 }
@@ -231,5 +235,6 @@ List gdpc_priv(const arma::mat & Z,
   ret["crit"] = crit;
   ret["res"] = res;
   ret["conv"] = conv;
+  ret["niter"] = niter;
   return(ret);
 }

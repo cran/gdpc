@@ -7,7 +7,8 @@ Computes Generalized Dynamic Principal Components. The number of components can 
 
 
 \usage{auto.gdpc(Z, crit = 'LOO', normalize = 1, auto_comp = TRUE, expl_var = 0.9,
-          num_comp = 5, tol = 1e-4, k_max = 10, niter_max = 500, ncores = 1)}
+          num_comp = 5, tol = 1e-4, k_max = 10,
+          niter_max = 500, ncores = 1, verbose = FALSE)}
 \arguments{
   \item{Z}{Data matrix. Each column is a different time series.}
   \item{crit}{A string specifying the criterion to be used. Options are 'LOO', 'AIC', 'BIC' and 'BNG'. Default is 'LOO'. See Details below.}
@@ -19,6 +20,7 @@ Computes Generalized Dynamic Principal Components. The number of components can 
   \item{k_max}{Integer. Maximum possible number of lags. Default is 10.}
   \item{niter_max}{Integer. Maximum number of iterations. Default is 500.}
   \item{ncores}{Integer. Number of cores to be used for parallel computations. Default is 1.}
+  \item{verbose}{Logical. Should progress be reported? Default is FALSE.}
 }
 
 \details{
@@ -37,8 +39,11 @@ If crit = 'BIC' the number of lags is chosen among \eqn{0,\dots, k_{max}} as the
 \deqn{ BIC = T \log(trace(\Sigma)) + m (k+2) \log(T) .}
 
 If crit = 'BNG' the number of lags is chosen among \eqn{0,\dots, k_{max}} as the value \eqn{k} that minimizes the following criterion
-\deqn{ BNG = T \log(trace(\Sigma)) + (k+2) \log(m).}
+\deqn{ BNG = \min(T, m) \log(trace(\Sigma)) + (k+1) \log(\min(T, m)).}
 This is an adaptation of a criterion proposed by Bai and Ng (2002).
+
+For problems of relatively small dimension, say \eqn{T \geq m 10}, 'AIC' can can give better results than the
+default 'LOO'.
 
 If normalize = 1, the data is analyzed in the original units, without mean and variance standarization. If normalize = 2, the data is standardized to zero mean and unit variance before computing the principal components, but the intercepts and loadings are those needed to reconstruct the original series. If normalize = 3 the data are standardized as in normalize = 2, but the intercepts and the loadings are those needed to reconstruct the standardized series. Default is normalize = 1.
 
@@ -56,6 +61,7 @@ If normalize = 1, the data is analyzed in the original units, without mean and v
   \item{initial_f}{Coordinates of the i-th dynamic principal component corresponding to the periods \eqn{-k+1,\dots,0}. Only for the case \eqn{k>0}, otherwise 0.}
       \item{call}{The matched call.}
       \item{conv}{Logical. Did the iterations converge?}
+      \item{niter}{Integer. Number of iterations.}
   \code{components}, \code{fitted}, \code{plot} and \code{print} methods are available for this class.
 }
 \author{
